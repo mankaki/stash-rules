@@ -1,0 +1,48 @@
+name: Stash DNS 稳定版
+desc: Fake-IP + 国内 DoH + iOS 系统 DNS 兼容，优先解决 Apple/天气等解析异常
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+
+  default-nameserver: #!replace
+    - 223.5.5.5
+    - 119.29.29.29
+
+  proxy-server-nameserver: #!replace
+    - 223.5.5.5
+    - 119.29.29.29
+
+  nameserver: #!replace
+    - https://dns.alidns.com/dns-query
+    - system
+
+  nameserver-policy:
+    "+.apple.com": system
+    "+.apple.com.cn": system
+    "+.icloud.com": system
+    "+.icloud-content.com": system
+    "+.mzstatic.com": system
+    "+.aaplimg.com": system
+    "+.cdn-apple.com": system
+    "+.weather.com": system
+    "+.local": system
+    "+.lan": system
+
+  fake-ip-filter: #!replace
+    - "*.lan"
+    - "+.local"
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - "+.stun.*.*.*.*.*"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "+.icloud.com"
+    - "+.icloud-content.com"
+    - "+.srv.nintendo.net"
+    - "+.stun.playstation.net"
+    - "xbox.*.*.microsoft.com"
+    - "*.*.xboxlive.com"
