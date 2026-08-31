@@ -1,0 +1,363 @@
+# Privacy-safe Clash YAML rule scheme for 塔台 / Stash
+# Combines ACL4SSR_Happy policy structure with the tested Stash DNS settings.
+# No subscription URL, proxy server, UUID, password or token is included.
+
+name: ACL4SSR Happy + Stash DNS
+desc: 保留原 ACL4SSR_Happy 分流与策略组，并加入 Stash Fake-IP / 国内 DNS / iOS 系统 DNS 兼容配置
+
+mode: rule
+log-level: warning
+ipv6: true
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - system
+
+  nameserver-policy:
+    "+.apple.com": system
+    "+.apple.com.cn": system
+    "+.icloud.com": system
+    "+.icloud.com.cn": system
+    "+.icloud-content.com": system
+    "+.mzstatic.com": system
+    "+.aaplimg.com": system
+    "+.cdn-apple.com": system
+    "+.weather.com": system
+    "+.local": system
+    "+.lan": system
+
+  fake-ip-filter:
+    - "*.lan"
+    - "+.local"
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "+.stun.*.*.*.*"
+    - "+.stun.*.*.*.*.*"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "+.icloud.com"
+    - "+.icloud.com.cn"
+    - "+.icloud-content.com"
+    - "+.srv.nintendo.net"
+    - "+.stun.playstation.net"
+    - "xbox.*.*.microsoft.com"
+    - "*.*.xboxlive.com"
+
+proxy-groups:
+  - name: "🚀 节点选择"
+    type: select
+    include-all: true
+    proxies:
+      - "♻️ 自动选择"
+      - DIRECT
+      - "🇭🇰 香港节点"
+      - "🇯🇵 日本节点"
+      - "🇺🇸 美国节点"
+      - "🇸🇬 狮城节点"
+      - "🇨🇳 台湾节点"
+      - "🇰🇷 韩国节点"
+
+  - name: "♻️ 自动选择"
+    type: url-test
+    include-all: true
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇭🇰 香港节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(香港|HK|Hong Kong|HongKong)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇯🇵 日本节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(日本|JP|Japan)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇺🇸 美国节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(美国|US|USA|United States|Los Angeles|San Jose)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇸🇬 狮城节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(新加坡|狮城|SG|Singapore)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇨🇳 台湾节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(台湾|TW|Taiwan)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇰🇷 韩国节点"
+    type: url-test
+    include-all: true
+    filter: "(?i)(韩国|KR|Korea)"
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: "🇲🇾 Claude"
+    type: select
+    include-all: true
+    filter: "(?i)(马来西亚|Malaysia)"
+
+  - name: "🤖 OpenAI"
+    type: select
+    proxies:
+      - "🇺🇸 美国节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 狮城节点"
+      - "🇨🇳 台湾节点"
+      - "🇰🇷 韩国节点"
+      - "🚀 节点选择"
+
+  - name: "🔷 Google Gemini"
+    type: select
+    proxies:
+      - "🇺🇸 美国节点"
+      - "🇭🇰 香港节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 狮城节点"
+      - "🇨🇳 台湾节点"
+      - "🇰🇷 韩国节点"
+      - "🚀 节点选择"
+
+  - name: "🔎 Google"
+    type: select
+    proxies:
+      - "🇺🇸 美国节点"
+      - "🇭🇰 香港节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 狮城节点"
+      - "🇨🇳 台湾节点"
+      - "🇰🇷 韩国节点"
+      - "🚀 节点选择"
+
+  - name: "📹 YouTube"
+    type: select
+    proxies:
+      - "🇺🇸 美国节点"
+      - "🇭🇰 香港节点"
+      - "🇯🇵 日本节点"
+      - "🇸🇬 狮城节点"
+      - "🇨🇳 台湾节点"
+      - "🇰🇷 韩国节点"
+      - "🚀 节点选择"
+
+  - name: "🌍 国外媒体"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+
+  - name: "📲 电报信息"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+
+  - name: "Ⓜ️ 微软服务"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - "🎯 全球直连"
+
+  - name: "🍎 苹果服务"
+    type: select
+    proxies:
+      - "🎯 全球直连"
+      - "🚀 节点选择"
+
+  - name: "🎯 全球直连"
+    type: select
+    proxies:
+      - DIRECT
+
+  - name: "🛑 全球拦截"
+    type: select
+    proxies:
+      - REJECT
+
+  - name: "🍃 应用净化"
+    type: select
+    proxies:
+      - REJECT
+
+  - name: "🐟 漏网之鱼"
+    type: select
+    proxies:
+      - "🚀 节点选择"
+      - "🎯 全球直连"
+
+rule-providers:
+  LocalAreaNetwork:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
+    path: ./ruleset/LocalAreaNetwork.list
+    interval: 86400
+  UnBan:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+    path: ./ruleset/UnBan.list
+    interval: 86400
+  BanAD:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+    path: ./ruleset/BanAD.list
+    interval: 86400
+  BanProgramAD:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+    path: ./ruleset/BanProgramAD.list
+    interval: 86400
+  Google:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Google.list
+    path: ./ruleset/Google.list
+    interval: 86400
+  GoogleCN:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/GoogleCN.list
+    path: ./ruleset/GoogleCN.list
+    interval: 86400
+  SteamCN:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
+    path: ./ruleset/SteamCN.list
+    interval: 86400
+  Microsoft:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list
+    path: ./ruleset/Microsoft.list
+    interval: 86400
+  Apple:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list
+    path: ./ruleset/Apple.list
+    interval: 86400
+  Telegram:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
+    path: ./ruleset/Telegram.list
+    interval: 86400
+  ProxyMedia:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+    path: ./ruleset/ProxyMedia.list
+    interval: 86400
+  ProxyLite:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyLite.list
+    path: ./ruleset/ProxyLite.list
+    interval: 86400
+  ChinaDomain:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list
+    path: ./ruleset/ChinaDomain.list
+    interval: 86400
+  ChinaCompanyIp:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
+    path: ./ruleset/ChinaCompanyIp.list
+    interval: 86400
+
+rules:
+  - RULE-SET,LocalAreaNetwork,🎯 全球直连
+  - RULE-SET,UnBan,🎯 全球直连
+  - DOMAIN-SUFFIX,taovip.com,🎯 全球直连
+
+  - RULE-SET,BanAD,🛑 全球拦截
+  - RULE-SET,BanProgramAD,🍃 应用净化
+
+  - RULE-SET,Google,🔎 Google
+  - RULE-SET,GoogleCN,🎯 全球直连
+  - RULE-SET,SteamCN,🎯 全球直连
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+  - RULE-SET,Apple,🍎 苹果服务
+  - RULE-SET,Telegram,📲 电报信息
+
+  - DOMAIN-SUFFIX,anthropic.com,🇲🇾 Claude
+  - DOMAIN-SUFFIX,claude.ai,🇲🇾 Claude
+  - DOMAIN-SUFFIX,claude.com,🇲🇾 Claude
+  - DOMAIN-SUFFIX,claudeusercontent.com,🇲🇾 Claude
+
+  - DOMAIN-KEYWORD,openai,🤖 OpenAI
+  - DOMAIN-SUFFIX,chatgpt.com,🤖 OpenAI
+  - DOMAIN-SUFFIX,openai.com,🤖 OpenAI
+  - DOMAIN-SUFFIX,oaistatic.com,🤖 OpenAI
+  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 OpenAI
+  - DOMAIN-SUFFIX,sora.com,🤖 OpenAI
+
+  - DOMAIN,ai.google.dev,🔷 Google Gemini
+  - DOMAIN-SUFFIX,gemini.google.com,🔷 Google Gemini
+  - DOMAIN-SUFFIX,generativeai.google,🔷 Google Gemini
+  - DOMAIN-KEYWORD,generativelanguage,🔷 Google Gemini
+
+  - DOMAIN-KEYWORD,youtube,📹 YouTube
+  - DOMAIN-SUFFIX,googlevideo.com,📹 YouTube
+  - DOMAIN-SUFFIX,youtu.be,📹 YouTube
+  - DOMAIN-SUFFIX,youtube.com,📹 YouTube
+  - DOMAIN-SUFFIX,ytimg.com,📹 YouTube
+
+  - RULE-SET,ProxyMedia,🌍 国外媒体
+  - RULE-SET,ProxyLite,🚀 节点选择
+  - RULE-SET,ChinaDomain,🎯 全球直连
+  - RULE-SET,ChinaCompanyIp,🎯 全球直连
+  - GEOIP,CN,🎯 全球直连,no-resolve
+  - MATCH,🐟 漏网之鱼
